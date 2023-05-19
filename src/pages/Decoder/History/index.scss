@@ -1,0 +1,35 @@
+@import "src/styles/variables.scss";
+
+.history {
+  margin: 24px 0;
+
+  &-title {
+    display: flex;
+
+    @media screen and (max-width: $mobile-width) {
+      justify-content: space-between;
+    }
+
+    &-icon {
+      margin-left: 16px;
+      width: 16px;
+      height: 16px;
+
+      &.open {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    &-item {
+      margin: 0 16px 8px 0;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

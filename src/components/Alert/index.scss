@@ -1,0 +1,25 @@
+.alert {
+  display: flex;
+  padding: 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+
+  &-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    flex-shrink: 0;
+
+    &.error {
+      transform: rotate(180deg);
+    }
+  }
+
+  &.error {
+    background: rgb(255 170 170);
+  }
+
+  &.info {
+    background: rgb(240 251 255);
+  }
+}

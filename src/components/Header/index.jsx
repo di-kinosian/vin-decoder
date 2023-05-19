@@ -8,12 +8,12 @@ export const Header = () => {
         <div className="header-name">VIN Decoder</div>
         <nav className="header-navigation">
           <li>
-            <NavLink exact to="/" className="header-link">
+            <NavLink to="/" className="header-link">
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink exact to="/variables" className="header-link">
+            <NavLink to="/variables" className="header-link">
               Variables
             </NavLink>
           </li>

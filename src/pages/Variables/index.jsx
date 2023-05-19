@@ -2,22 +2,15 @@ import sanitizeHtml from "sanitize-html";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./index.scss";
+import { getVariablesList } from "../../api/getVariablesList";
 
 export const Variables = () => {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    fetch(
-      `https://vpic.nhtsa.dot.gov/api/vehicles/getvehiclevariablelist?format=json`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setList(data.Results);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error decoding VIN:", error);
-      });
+    getVariablesList((data) => {
+      setList(data.Results);
+    });
   }, []);
 
   return (

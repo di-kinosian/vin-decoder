@@ -1,22 +1,38 @@
-import React, { useState, useEffect } from "react";
-import thanIcon from "../../assets/thanIcon.svg";
+import React, { useState, useEffect, useMemo } from "react";
 import "./index.scss";
+import { Alert } from "../../components/Alert";
+import { History } from "./History";
+import { validateVin } from "../../helpers/validateVin";
+import { getVinData } from "../../api/getVinData";
 
 const isEmpty = (value) => {
   return value === null || value === undefined || value === "";
+};
+
+const getErrorFromResults = (results) => {
+  return results.find((i) => i.Variable === "Error Text").Value;
 };
 
 export const Decoder = () => {
   const [vin, setVin] = useState("");
   const [decodedData, setDecodedData] = useState(null);
   const [history, setHistory] = useState(
-    JSON.parse(localStorage.getItem("history" || []))
+    JSON.parse(localStorage.getItem("history")) || []
   );
-  const [isOpen, setIsOpen] = useState(true);
+  const [inputError, setInputError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     localStorage.setItem("history", JSON.stringify(history));
   });
+
+  const decodedDataList = useMemo(
+    () =>
+      decodedData?.Results?.length
+        ? decodedData.Results.filter((item) => !isEmpty(item.Value))
+        : [],
+    [decodedData]
+  );
 
   const handleVinChange = (event) => {
     const eventValue = event.target.value;
@@ -25,96 +41,80 @@ export const Decoder = () => {
     }
   };
 
-  const handleDecode = () => {
-    if (validateVin(vin)) {
-      fetch(
-        `https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/${vin}?format=json`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setDecodedData(data.Results.filter((item) => !isEmpty(item.Value)));
-          addToHistory(vin);
-          setVin("");
-        })
-        .catch((error) => {
-          console.error("Error decoding VIN:", error);
-        });
+  const onVinInputBlur = () => {
+    if (!vin || validateVin(vin)) {
+      setInputError("");
+    } else {
+      setInputError("Enter correct VIN code");
     }
   };
+
+  const isButtonDisabled = useMemo(() => {
+    return !validateVin(vin);
+  }, [vin]);
+
+  const decodeVin = (vinValue) => {
+    getVinData(
+      vinValue,
+      (data) => {
+        setDecodedData(data);
+        addToHistory(vinValue);
+        setVin("");
+        setErrorMessage(getErrorFromResults(data.Results));
+      },
+      () => {
+        setErrorMessage("Failed to fetch data");
+      }
+    );
+  };
+
+  const handleDecode = () => {
+    decodeVin(vin);
+  };
+
   const addToHistory = (vin) => {
     const vinList = [...new Set([vin, ...history])].slice(0, 5);
-    console.log(vinList, "vinList");
     setHistory(vinList);
   };
 
-  const validateVin = (vin) => {
-    const vinRegex = /^[A-HJ-NPR-Z0-9]{17}$/;
-    return vinRegex.test(vin);
-  };
-
-  const openHistory = () => {
-    setIsOpen(!isOpen);
-  };
-
-  // console.log(history, "history");
   return (
     <div className="decoder">
-      <div className="decoder-container">
-        <h1 className="container-header">VIN Decoder</h1>
-        <div className="decoder-container-content">
-          <input
-            className="decoder-container-content-input"
-            type="text"
-            value={vin}
-            onChange={handleVinChange}
-            placeholder="Enter VIN (17-character)"
-          />
+      <div className="decoder-form">
+        <h1>VIN Decoder</h1>
+        <div className="decoder-form-content">
+          <div className="decoder-form-input-container">
+            <input
+              className="decoder-form-input"
+              type="text"
+              value={vin}
+              onChange={handleVinChange}
+              placeholder="Enter VIN (17-character)"
+              onBlur={onVinInputBlur}
+            />
+            {inputError && (
+              <div className="decoder-form-input-error">{inputError}</div>
+            )}
+          </div>
           <button
-            className="decoder-container-content-button"
+            className="decoder-form-button"
             onClick={handleDecode}
-            disabled={!vin || vin.length < 17}
+            disabled={isButtonDisabled}
           >
-            Decoder
+            Decode
           </button>
         </div>
       </div>
-      <div className="history-title">
-        <h3>Recently decoding VIN numbers</h3>
-        {/* <div className="history-title-icon" onClick={openHistory}>+</div> */}
-        <img
-          src={thanIcon}
-          alt="thanIcon"
-          // className="history-title-icon"
-          className={isOpen ? 'history-title-rotated' : 'history-title-icon'}
-          onClick={openHistory}
-        />
-      </div>
-      {isOpen && history.length > 0 ? (
-        <div className="history">
-          <ul>
-            {history.map((vin, index) => (
-              <li
-                className="history-item"
-                key={index.toString()}
-                // onClick={handleDecode}
-              >
-                {vin}
-              </li>
-            ))}
-          </ul>
+
+      <History list={history} onSelect={decodeVin} />
+
+      {decodedData?.Message && <Alert type="info">{decodedData.Message}</Alert>}
+      {errorMessage && <Alert type="error">{errorMessage}</Alert>}
+      {decodedDataList.map((data) => (
+        <div className="decoded-data">
+          <div className="decoded-data-value">{data.Variable}: </div>
+          <div className="decoded-data-variable">{data.Value}</div>
         </div>
-      ) : null}
-      {decodedData && (
-        <>
-          <h3>Decoded Data:</h3>
-          {decodedData.map((data) => (
-            <div className="decoded-data">
-              <div className="decoded-data-value">{data.Variable}: </div>
-              <div className="decoded-data-variable">{data.Value}</div>
-            </div>
-          ))}
-        </>
-      )}
+      ))}
     </div>
   );
 };
