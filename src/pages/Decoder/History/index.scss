@@ -4,7 +4,9 @@
   margin: 24px 0;
 
   &-title {
+    cursor: pointer;
     display: flex;
+    align-items: center;
 
     @media screen and (max-width: $mobile-width) {
       justify-content: space-between;
@@ -24,6 +26,8 @@
   &-list {
     display: flex;
     flex-wrap: wrap;
+    margin: 0px;
+    padding: 0px;
 
     &-item {
       margin: 0 16px 8px 0;

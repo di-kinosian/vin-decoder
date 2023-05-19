@@ -51,6 +51,14 @@
 
     &-description {
       overflow: hidden;
+
+			li {
+				list-style-type: initial;
+			}
+
+			p:not(:last-child) {
+				margin-bottom: 8px;
+			}
     }
   }
 }

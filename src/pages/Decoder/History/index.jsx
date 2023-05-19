@@ -11,13 +11,12 @@ export const History = (props) => {
 
   return props.list.length > 0 ? (
     <section className="history">
-      <div className="history-title">
+      <div className="history-title" onClick={toggleHistory}>
         <h3>Recently decoded VIN numbers</h3>
         <img
           src={arrowIcon}
           alt=""
           className={`history-title-icon ${isOpen ? 'open' : 'close'}`}
-          onClick={toggleHistory}
         />
       </div>
       {isOpen && props.list.length > 0 ? (
