@@ -1,13 +1,12 @@
 .data {
-    padding: 0 16px;
+  padding: 0 16px;
 
-    &-name {
-        font-size: 14px;
-        margin-right: 16px;
-    }
+  &-name {
+    font-size: 14px;
+    margin-right: 16px;
+  }
 
-    &-description {
-        overflow: hidden;
-    }
+  &-description {
+    overflow: hidden;
+  }
 }
-

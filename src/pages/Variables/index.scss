@@ -1,9 +1,9 @@
 @import "src/styles/variables.scss";
 
 .page-title {
-	margin: 16px 24px;
+  margin: 16px 24px;
 
-	@media screen and (max-width: $mobile-width) {
+  @media screen and (max-width: $mobile-width) {
     margin: 12px 16px;
   }
 }
@@ -17,10 +17,10 @@
     padding: 0 8px;
   }
 
-	&-link {
-		text-decoration: none;
-		color: inherit;
-	}
+  &-link {
+    text-decoration: none;
+    color: inherit;
+  }
 
   &-row {
     padding: 8px;
@@ -43,6 +43,10 @@
       flex-shrink: 0;
       margin-right: 8px;
       margin-bottom: 4px;
+
+      @media screen and (max-width: $mobile-width) {
+        width: 100%;
+      }
     }
 
     &-description {

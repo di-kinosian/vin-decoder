@@ -111,8 +111,8 @@ export const Decoder = () => {
       {errorMessage && <Alert type="error">{errorMessage}</Alert>}
       {decodedDataList.map((data) => (
         <div className="decoded-data">
-          <div className="decoded-data-value">{data.Variable}: </div>
-          <div className="decoded-data-variable">{data.Value}</div>
+          <div className="decoded-data-name">{data.Variable}: </div>
+          <div className="decoded-data-value">{data.Value}</div>
         </div>
       ))}
     </div>

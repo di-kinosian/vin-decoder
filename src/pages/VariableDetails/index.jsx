@@ -15,7 +15,7 @@ export const VariableDetails = () => {
     });
   }, [id]);
 
-  return variableData !== null ? (
+  return variableData ? (
     <div className="data">
       <h2>Variable Details:</h2>
       <h3>Name:</h3>

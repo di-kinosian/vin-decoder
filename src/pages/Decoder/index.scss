@@ -1,7 +1,6 @@
 @import "src/styles/variables.scss";
 
 .decoder {
-  // width: 100%;
   margin: 0 auto;
   padding: 0 16px;
 
@@ -10,7 +9,7 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 32px;
-    
+
     &-content {
       font-size: 18px;
       display: flex;
@@ -39,6 +38,7 @@
       &-error {
         color: red;
         font-size: 16px;
+        margin-bottom: 8px;
       }
     }
 
@@ -59,57 +59,36 @@
   }
 }
 
-.decoded-data {
-  padding: 8px;
-  display: flex;
-  gap: 20px;
-  border-bottom: 1px solid rgb(183, 183, 183);
-
-  &:hover {
-    background: rgb(227, 226, 226);
-  }
-
-  &-value {
-    font-size: 14px;
-    font-weight: bold;
-    width: 230px;
-    flex-shrink: 0;
-    margin-right: 8px;
-    margin-bottom: 4px;
-    // overflow: hidden;
-  }
-
-  &-variable {
-    overflow: hidden;
-  }
-}
-
-.history-title {
-  display: flex;
-  align-items: center;
-
-  &-icon, &-rotated {
-    margin-left: 6px;
-    width: 16px;
-    height: 16px;
-  }
-  &-rotated {
-    transform: rotate(90deg);
-  }
-}
-
-.history {
-  margin-bottom: 28px;
-
-  &-item {
-    font-size: 18px;
-    margin-bottom: 6px;
-    color: rgb(72, 72, 72);
-    cursor: pointer;
+.decoded {
+  &-data {
+    padding: 8px;
+    display: flex;
+    border-bottom: 1px solid rgb(183, 183, 183);
 
     &:hover {
-      text-decoration: underline;
-      
+      cursor: pointer;
+      background: rgb(227, 226, 226);
+    }
+
+    @media screen and (max-width: $mobile-width) {
+      flex-direction: column;
+    }
+
+    &-name {
+      font-size: 14px;
+      font-weight: bold;
+      width: 200px;
+      flex-shrink: 0;
+      margin-right: 8px;
+      margin-bottom: 4px;
+
+      @media screen and (max-width: $mobile-width) {
+        width: 100%;
+      }
+    }
+
+    &-value {
+      overflow: hidden;
     }
   }
 }

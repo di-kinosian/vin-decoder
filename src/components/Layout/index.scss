@@ -1,8 +1,8 @@
 @import "src/styles/variables.scss";
 
 .layout {
-	&-content {
-		max-width: $desktop-width;
-		margin: 0 auto;
-	}
+  &-content {
+    max-width: $desktop-width;
+    margin: 0 auto;
+  }
 }
